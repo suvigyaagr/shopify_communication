@@ -6,7 +6,8 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from api.adapters import ShopifyAdminApiAdapter
-from api.controllers import ShopifyGetProductsController, ShopifyCreateOrderController, ListProductsController
+from api.controllers import ShopifyGetProductsController, ShopifyCreateOrderController, ListProductsController, \
+    ListOrdersController
 from api.serializers import ShopifyProductsSerializer
 
 
@@ -18,7 +19,27 @@ def health_view(request):
 
 @api_view(['GET'])
 def list_products(request):
+    """
+    params:
+        -limit: to limit the number of responses per page
+        -page: page_number
+
+    """
     response, status_code = ListProductsController(request).process()
+    return Response(response, status_code)
+
+
+@api_view(['GET'])
+def list_orders(request):
+    """
+        params:
+            -from_date: in the format of yyyy-mm-dd
+            -to_date: in the format of yyyy-mm-dd
+            -limit: to limit the number of responses per page
+            -page: page_number
+
+    """
+    response, status_code = ListOrdersController(request).process()
     return Response(response, status_code)
 
 

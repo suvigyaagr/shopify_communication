@@ -1,9 +1,11 @@
+from datetime import datetime, timedelta
+
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from rest_framework import status
 
 from api.adapters import ShopifyAdminApiAdapter
 from api.exceptions import ShopifyProductAdditionException
-from api.models import OrderItem, Product
+from api.models import OrderItem, Product, Order
 from api.serializers import ShopifyProductsSerializer, ShopifyCreateOrderSerializer
 
 
@@ -39,6 +41,49 @@ class ListProductsController:
             "current_page": page,
             "total_pages": paginator.num_pages,
             "products": serialized_products,
+        }
+        return self.response, status.HTTP_200_OK
+
+
+class ListOrdersController:
+    def __init__(self, request):
+        self.request = request
+        self.params = request.GET
+        self.response = None
+        self.api_response_status = None
+        print("ListProductsController init")
+
+    def process(self):
+        limit = self.params.get("limit", 10)
+        page = int(self.params.get("page", 1))
+        from_date = self.params.get("from_date", "1970-01-01")
+        to_date = self.params.get("to_date")
+        if not to_date:
+            to_date = (datetime.now() + timedelta(days=1)).strftime("%Y-%m-%d")
+
+        orders_list = Order.objects.filter(
+            created_at__range=[from_date, to_date],
+        )
+        paginator = Paginator(orders_list, limit)
+        try:
+            orders = paginator.page(page)
+        except PageNotAnInteger:
+            page = 1
+            orders = paginator.page(page)
+        except EmptyPage:
+            page = paginator.num_pages
+            orders = paginator.page(paginator.num_pages)
+
+        serialized_orders = []
+        for order in orders:
+            serializer = ShopifyCreateOrderSerializer(order)
+            serialized_orders.append(serializer.data)
+
+        self.response = {
+            "count": paginator.count,
+            "current_page": page,
+            "total_pages": paginator.num_pages,
+            "orders": serialized_orders,
         }
         return self.response, status.HTTP_200_OK
 
