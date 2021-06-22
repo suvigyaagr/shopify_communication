@@ -12,6 +12,7 @@ Steps for setup after cloning:
 Endpoints built:
  - `/health` : [GET] Health check endpoint
  - `/admin` : [GET] Django Admin Site
+ - `/products` : [GET] Lists of products saved in dB. (Optional params: limit:<int>, page:<int>)
+ - `/orders` : [GET] Lists of orders saved in dB. (Optional params: from_date:<yyyy-mm-dd>, to_date:<yyyy-mm-dd>, limit:<int>, page:<int>)
  - `/shopify/get_products` : [GET] Fetching the list of products from Shopify (same as cron) - Built as can be used to call crons using 3rd Party (like Cronicle)
  - `/shopify/create_order` : [POST] For creating an order on Shopify (needs `variant_id` & `quantity` in body)
- - `/products` : [GET] Lists of products saved in dB. (Optional params: limit:<int>, page:<int>)
