@@ -44,8 +44,7 @@ class ListProductsController:
 
 
 class ShopifyGetProductsController:
-    def __init__(self, request):
-        self.request = request
+    def __init__(self):
         self.products = []
         self.api_response = None
         self.api_response_status = None

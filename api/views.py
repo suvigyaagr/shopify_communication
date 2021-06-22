@@ -24,7 +24,7 @@ def list_products(request):
 
 @api_view(['GET'])
 def shopify_get_products_view(request):
-    response, status_code = ShopifyGetProductsController(request).process()
+    response, status_code = ShopifyGetProductsController().process()
     return Response(data=response, status=status_code)
 
 
