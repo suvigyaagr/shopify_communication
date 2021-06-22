@@ -1,4 +1,5 @@
 # Shopify Communication
+Repo: https://github.com/suvigyaagr/shopify_communication
 
 Steps for setup after cloning:
  - Create a new python(3.6.10) environment
