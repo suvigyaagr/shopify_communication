@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from rest_framework.fields import SerializerMethodField
 
-from api.models import Product, Variant
+from api.models import Product, Variant, Order
 
 
 class ShopifyVariantsSerializer(serializers.ModelSerializer):
@@ -76,3 +76,27 @@ class ShopifyProductsSerializer(serializers.ModelSerializer):
             else:
                 print(serializer.errors)
         return product
+
+
+class ShopifyCreateOrderSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Order
+        fields = (
+            "id",
+            "currency",
+            "financial_status",
+            "fulfillment_status",
+            "order_status_url",
+            "processed_at",
+            "created_at",
+            "updated_at",
+        )
+
+    def create(self, validated_data):
+        print('Inside ShopifyCreateOrderSerializer create')
+        order_item = self.context.get("order_item")
+        order = Order.objects.create(**validated_data)
+        order_item.order = order
+        order_item.save()
+        return order
