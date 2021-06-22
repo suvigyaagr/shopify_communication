@@ -65,12 +65,19 @@ class Variant(models.Model):
     updated_at = models.DateTimeField()
 
 
+class Status:
+    PENDING = "pending"
+    FAILED = "failed"
+    SUCCESS = "success"
+
+
 class Order(models.Model):
     id = models.IntegerField(primary_key=True, null=False, blank=False)
     currency = models.CharField(max_length=10, default=CurrencyUnits.USD)
     financial_status = models.CharField(max_length=10)
     fulfillment_status = models.CharField(max_length=10, null=True, blank=True)
     order_status_url = models.URLField()
+    final_status = models.CharField(max_length=10, default=Status.PENDING)
 
     processed_at = models.DateTimeField()
     created_at = models.DateTimeField()
