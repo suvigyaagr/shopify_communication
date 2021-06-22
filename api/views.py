@@ -24,5 +24,9 @@ def shopify_get_products_view(request):
 
 @api_view(['POST'])
 def shopify_create_order_view(request):
+    """
+        Json Body example:
+        {"variant_id": 32328279359555, "quantity": 12}
+    """
     response, status_code = ShopifyCreateOrderController(request).process()
     return Response(data=response, status=status_code)
