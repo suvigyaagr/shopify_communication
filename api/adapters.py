@@ -22,3 +22,27 @@ class ShopifyAdminApiAdapter:
         except Exception as e:
             print(e)
         return None
+
+    def create_order(self):
+        try:
+            request = requests.post(
+                url=f'{self.base_url}/admin/api/2021-01/products.json',
+                json={
+                    "order": {
+                        "line_items": [
+                            {
+                                "variant_id": 32066662432835,
+                                "quantity": 2
+                            }
+                        ]
+                    }
+                }
+            )
+            if request.status_code == 200:
+                response = json.loads(request.text)
+                print(response)
+                return response
+
+        except Exception as e:
+            print(e)
+        return None
