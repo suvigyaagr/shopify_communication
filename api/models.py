@@ -20,7 +20,7 @@ class Product(TimeStampedModel):
     published_scope = models.CharField(max_length=30)
     tags = models.CharField(max_length=200)
     admin_graphql_api_id = models.CharField(max_length=200)
-    channel_created_at = models.DateTimeField()gi
+    channel_created_at = models.DateTimeField()
     channel_updated_at = models.DateTimeField()
     channel_published_at = models.DateTimeField()
 
