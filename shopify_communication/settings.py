@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'api',
     'django_extensions',
+    'django_crontab',
 ]
 
 MIDDLEWARE = [
@@ -130,3 +131,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 SHOPIFY_API_KEY = 'a38f4a6a8cb713fe2bebdbf3df331f54'
 SHOPIFY_PASSWORD = '3182dcd29ff6c3f6f2dd325ba99b4216'
 SHOPIFY_STORE = 'mishipaytestdevelopmentemptystore'
+
+CRONJOBS = [
+    # Currently for seeing the output, the cron is run every-minute but can be changed as per requirement
+    ('* * * * *', 'api.cron.fetch_shopify_produts')
+]
