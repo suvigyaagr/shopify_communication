@@ -126,3 +126,7 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+SHOPIFY_API_KEY = 'a38f4a6a8cb713fe2bebdbf3df331f54'
+SHOPIFY_PASSWORD = '3182dcd29ff6c3f6f2dd325ba99b4216'
+SHOPIFY_STORE = 'mishipaytestdevelopmentemptystore'
