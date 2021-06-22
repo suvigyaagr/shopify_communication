@@ -64,3 +64,29 @@ class Variant(models.Model):
     created_at = models.DateTimeField()
     updated_at = models.DateTimeField()
 
+
+class Order(models.Model):
+    id = models.IntegerField(primary_key=True, null=False, blank=False)
+    currency = models.CharField(max_length=10, default=CurrencyUnits.USD)
+    financial_status = models.CharField(max_length=10)
+    fulfillment_status = models.CharField(max_length=10, null=True, blank=True)
+    order_status_url = models.URLField()
+
+    processed_at = models.DateTimeField()
+    created_at = models.DateTimeField()
+    updated_at = models.DateTimeField()
+
+
+class OrderItem(models.Model):
+    order = models.ForeignKey(
+        Order,
+        on_delete=models.CASCADE,
+        related_name="items",
+        null=True,
+    )
+    variant = models.ForeignKey(
+        Variant,
+        on_delete=models.CASCADE,
+        related_name="orders",
+    )
+    quantity = models.IntegerField()
