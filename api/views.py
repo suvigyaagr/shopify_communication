@@ -6,6 +6,8 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from api.adapters import ShopifyAdminApiAdapter
+from api.controllers import ShopifyGetProductsController
+from api.serializers import ShopifyProductsSerializer
 
 
 @api_view(['GET'])
@@ -16,8 +18,5 @@ def health_view(request):
 
 @api_view(['GET'])
 def shopify_get_products_view(request):
-    print("shopify_get_products_view")
-    import ipdb;
-    ipdb.set_trace()
-    response = ShopifyAdminApiAdapter().get_products()
+    response = ShopifyGetProductsController(request).process()
     return Response(data=response, status=status.HTTP_200_OK)

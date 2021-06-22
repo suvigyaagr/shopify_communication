@@ -16,7 +16,7 @@ class ShopifyAdminApiAdapter:
             )
             if request.status_code == 200:
                 response = json.loads(request.text)
-                print(response)
+                # print(response)
                 return response
 
         except Exception as e:
@@ -40,7 +40,7 @@ class ShopifyAdminApiAdapter:
             )
             if request.status_code == 200:
                 response = json.loads(request.text)
-                print(response)
+                # print(response)
                 return response
 
         except Exception as e:
