@@ -10,22 +10,22 @@ class TimeStampedModel(models.Model):
         abstract = True
 
 
-class Product(TimeStampedModel):
-    channel_product_id = models.IntegerField(primary_key=True, null=False, blank=False)
+class Product(models.Model):
+    id = models.IntegerField(primary_key=True, null=False, blank=False)
     title = models.CharField(max_length=100, null=False, blank=False)
-    body_html = models.TextField()
     vendor = models.CharField(max_length=100, null=False, blank=False)
-    product_type = models.CharField(max_length=100)
+    product_type = models.CharField(max_length=100, null=True, blank=True)
     handle = models.CharField(max_length=100)
     published_scope = models.CharField(max_length=30)
-    tags = models.CharField(max_length=200)
+    tags = models.CharField(max_length=200, blank=True, null=True)
     admin_graphql_api_id = models.CharField(max_length=200)
-    channel_created_at = models.DateTimeField()
-    channel_updated_at = models.DateTimeField()
-    channel_published_at = models.DateTimeField()
+    created_at = models.DateTimeField()
+    updated_at = models.DateTimeField()
+    published_at = models.DateTimeField()
 
 
 class WeightUnits:
+    KG = "kg"
     LB = "lb"
 
 
@@ -34,35 +34,33 @@ class CurrencyUnits:
     INR = "INR"
 
 
-class Variant(TimeStampedModel):
+class Variant(models.Model):
     product = models.ForeignKey(
         Product,
         on_delete=models.CASCADE,
         related_name="variants",
     )
-    channel_variant_id = models.IntegerField(primary_key=True, null=False, blank=False)
+    id = models.IntegerField(primary_key=True, null=False, blank=False)
     title = models.CharField(max_length=100, null=False, blank=False)
     price = models.DecimalField(decimal_places=2, max_digits=8)
     currency = models.CharField(max_length=10, default=CurrencyUnits.USD)
-    sku = models.CharField(max_length=30, unique=True, null=False, blank=False)
+    sku = models.CharField(max_length=30, null=True, blank=True)
     position = models.IntegerField()
     inventory_policy = models.CharField(max_length=30)
     fulfillment_service = models.CharField(max_length=30)
-    inventory_management = models.CharField(max_length=30)
-    option1 = models.CharField(max_length=30)
-    option2 = models.CharField(max_length=30)
-    option3 = models.CharField(max_length=30)
-    image_id = models.IntegerField()
+    option1 = models.CharField(max_length=30, null=True, blank=True)
+    option2 = models.CharField(max_length=30, null=True, blank=True)
+    option3 = models.CharField(max_length=30, null=True, blank=True)
+    image_id = models.CharField(max_length=100, null=True, blank=True)
     taxable = models.BooleanField()
-    barcode = models.CharField(max_length=30)
+    barcode = models.CharField(max_length=30, null=True, blank=True)
     grams = models.DecimalField(decimal_places=2, max_digits=8)
     weight = models.DecimalField(decimal_places=2, max_digits=8)
-    weight_unit = models.CharField(max_length=10, default=WeightUnits.LB)
-    inventory_item_id = models.IntegerField()
+    weight_unit = models.CharField(max_length=10, default=WeightUnits.KG)
+    inventory_item_id = models.CharField(max_length=30)
     inventory_quantity = models.IntegerField()
     old_inventory_quantity = models.IntegerField()
 
-    channel_created_at = models.DateTimeField()
-    channel_updated_at = models.DateTimeField()
-    channel_published_at = models.DateTimeField()
+    created_at = models.DateTimeField()
+    updated_at = models.DateTimeField()
 
