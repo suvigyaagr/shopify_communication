@@ -1,5 +1,7 @@
 # Shopify Communication
+
 Repo: https://github.com/suvigyaagr/shopify_communication
+
 API Documentation: https://documenter.getpostman.com/view/6568889/TzeajRuF
 
 Steps for setup after cloning:
