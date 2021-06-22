@@ -1,6 +1,6 @@
 # Shopify Communication
 Repo: https://github.com/suvigyaagr/shopify_communication
-Postman Collection: https://www.getpostman.com/collections/41308fd733fde7adfd75
+API Documentation: https://documenter.getpostman.com/view/6568889/TzeajRuF
 
 Steps for setup after cloning:
  - Create a new python(3.6.10) environment
