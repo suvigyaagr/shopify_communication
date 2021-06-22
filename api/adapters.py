@@ -1,48 +1,35 @@
 import json
-
 import requests
-
-SHOPIFY_BASE_API_URL = 'https://a38f4a6a8cb713fe2bebdbf3df331f54:3182dcd29ff6c3f6f2dd325ba99b4216@mishipaytestdevelopmentemptystore.myshopify.com'
+from django.conf import settings
 
 
 class ShopifyAdminApiAdapter:
     def __init__(self):
-        self.base_url = SHOPIFY_BASE_API_URL
+        self.base_url = f'https://{settings.SHOPIFY_API_KEY}:{settings.SHOPIFY_PASSWORD}@{settings.SHOPIFY_STORE}.myshopify.com/admin/api'
 
     def get_products(self):
-        try:
-            request = requests.get(
-                url=f'{self.base_url}/admin/api/2021-01/products.json',
-            )
-            if request.status_code == 200:
-                response = json.loads(request.text)
-                # print(response)
-                return response
+        url = f'{self.base_url}/2021-01/products.json'
+        request = requests.get(
+            url=url,
+        )
+        return self.return_response(request)
 
-        except Exception as e:
-            print(e)
-        return None
+    def create_order(self, items):
+        url = f'{self.base_url}/2021-01/orders.json'
+        body = {
+            "order": {
+                "line_items": items
+            }
+        }
+        print(url)
+        print(body)
+        request = requests.post(
+            url=url,
+            json=body,
+        )
+        return self.return_response(request)
 
-    def create_order(self):
-        try:
-            request = requests.post(
-                url=f'{self.base_url}/admin/api/2021-01/products.json',
-                json={
-                    "order": {
-                        "line_items": [
-                            {
-                                "variant_id": 32066662432835,
-                                "quantity": 2
-                            }
-                        ]
-                    }
-                }
-            )
-            if request.status_code == 200:
-                response = json.loads(request.text)
-                # print(response)
-                return response
-
-        except Exception as e:
-            print(e)
-        return None
+    def return_response(self, request):
+        response_body = json.loads(request.text)
+        print(request.status_code, response_body)
+        return request.status_code, response_body
