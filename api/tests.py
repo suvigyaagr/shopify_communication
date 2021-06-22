@@ -1,10 +1,14 @@
 from unittest import mock
 
+import requests
 from django.conf import settings
 from django.test import TestCase
+from django.urls import reverse
 from rest_framework import status
+from rest_framework.test import APITestCase
 
 from api.adapters import ShopifyAdminApiAdapter
+from api.models import Product
 
 TEST_SHOPIFY_API_KEY = 'abc'
 TEST_SHOPIFY_PASSWORD = 'def'
@@ -141,3 +145,44 @@ class ShopifyAdapterTestCase(TestCase):
         status_code, response = adapter.create_order(test_items)
         self.assertNotEqual(status_code, status.HTTP_201_CREATED)
         self.assertIn("errors", response)
+
+
+class APIResponseTestCase(APITestCase):
+
+    @classmethod
+    def setUpTestData(cls):
+        cls.product1 = Product.objects.create(
+            id=123,
+            title="iPhone",
+            vendor="Apple",
+            product_type="",
+            handle="i-phone",
+            published_scope="global",
+            tags="",
+            admin_graphql_api_id="gid://shopify/Product/123",
+            created_at="2021-02-21T06:59:16-05:00",
+            updated_at="2021-02-21T06:59:17-05:00",
+            published_at="2020-09-16T02:22:38-04:00",
+        )
+
+    def test_health_get_request(self):
+        url = reverse('health')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data, "OK")
+
+    def test_health_post_request(self):
+        url = reverse('health')
+        response = self.client.post(url)
+        self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
+
+    def test_products_list_get_request(self):
+        url = reverse('products_list')
+        response = self.client.get(url)
+        import ipdb; ipdb.set_trace()
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIn("count", response.data)
+        self.assertIn("current_page", response.data)
+        self.assertIn("total_pages", response.data)
+        self.assertIn("products", response.data)
+

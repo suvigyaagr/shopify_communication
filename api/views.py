@@ -14,7 +14,7 @@ from api.serializers import ShopifyProductsSerializer
 @api_view(['GET'])
 def health_view(request):
     print("Health")
-    return Response(status=status.HTTP_200_OK)
+    return Response(data="OK", status=status.HTTP_200_OK)
 
 
 @api_view(['GET'])
